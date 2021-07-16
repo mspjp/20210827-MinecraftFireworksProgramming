@@ -4,6 +4,6 @@
 理想はこんな感じです。（現在準備中...）
 ここまでできるかはわからないので色々試しながら考えます。
 
-<iframe width="994" height="559" src="https://www.youtube.com/embed/9yzj5DeJ94c" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[![](http://img.youtube.com/vi/9yzj5DeJ94c/0.jpg)](https://www.youtube.com/watch?v=9yzj5DeJ94c)
 
 動画では影Mod (Optifine, BSL Shaders) を導入していますが、時間的に厳しいと思いますので、シェーダーの説明はなしにする予定です。もしくは補足資料として配布します。
