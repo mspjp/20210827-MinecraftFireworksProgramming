@@ -24,7 +24,7 @@ Minecraft本体を準備してください。
 
 ![](images/01.jpg)
 
-起動後はマルチプレイを選択し、サーバの追加から指定されたアドレスを入力します。
+起動後は`マルチプレイ`を選択し、`サーバの追加`から指定されたアドレスを入力します。
 
 </div></details>
 
@@ -99,7 +99,7 @@ install-package MinecraftConnection
 <details><summary>Azure Functionsで導入する場合</summary>
 <div>
 
-NuGetパッゲージを導入するには `functions.proj` というファイルを作成して、このように記述してください。
+NuGetパッゲージを導入するには `function.proj` というファイルを作成して、このように記述してください。
 
 ```xml
 <Project Sdk="Microsoft.NET.Sdk">
@@ -117,8 +117,6 @@ NuGetパッゲージを導入するには `functions.proj` というファイル
 ![](images/02.png)
 
 </div></details>
-
-</br>
 
 ## MinecraftConnectionの使い方
 MinecraftConnection を使用するには、MinecraftCommandsのインスタンスを生成してから作成します。</br>
@@ -180,7 +178,7 @@ var fireworks = new Fireworks(20, 2, FireworksShapes.LargeBall, true, false, Fir
 
 コンストラクタの引数は
 
-- 花火が爆発するまでの時間 (int) 
+- 花火が爆発するまでの時間 (int)
 - 花火の飛距離 (int)
 - 花火の形状 (FireworksShape)
 - きらめき効果 (bool)
@@ -203,7 +201,7 @@ var fireworks = new Fireworks(20, 2, FireworksShapes.LargeBall, true, false, col
 とすることで緑、オレンジ、黄色の爆発をしたあとに、赤色でフェードアウトしていくような花火になります。
 また、現実世界での1秒はマイクラの世界では 1/20[秒]= 0.05[秒] = 1[tick] になりますので、上記の例では打ち上げて1秒後に花火が爆発するようになります。
 
-また、花火が爆発したときの形状を5種類から選ぶことができます。
+花火が爆発したときの形状は5種類から選ぶことができます。
 
 - LargeBall
 - SmallBall
@@ -268,7 +266,7 @@ public static void Run(TimerInfo myTimer, ILogger log)
     int x = -72;
     int y = 68;
     int z = 92;
-    
+
     var rnd = new Random();
     foreach(var item in FireworksItemItemList.LeargeBallList)
     {
@@ -344,7 +342,7 @@ static MinecraftCommands commands = new MinecraftCommands(address, port, pass);
 
 public static void Run(TimerInfo myTimer, ILogger log)
 {
-    int x = -52 - 20;
+    int x = -72;
     int y = 68;
     int z = 92 + 10;
 
@@ -424,13 +422,11 @@ public static List<FireworksColors> GetRandomColors()
 
 </div></details>
 
-</br>
-
 # 検証4
 検証3で作成したプログラムを実行しながら花火を打ち上げつつ、皆さんで動き回ります。</br>
 
 # その5
-その他、気になった点について話し合います。
+その他、気になった点について相談・検証
 
 (個人的に気になっている点)
 - Azure Functions に絞るべきか
