@@ -260,7 +260,7 @@ using MinecraftConnection.Items;
 
 static string address = "";
 static ushort port = 25575;
-static string pass = "98ds3b_0ees";
+static string pass = "";
 static MinecraftCommands commands = new MinecraftCommands(address, port, pass);
 
 public static void Run(TimerInfo myTimer, ILogger log)
@@ -287,9 +287,9 @@ using System;
 using MinecraftConnection;
 using MinecraftConnection.Items;
 
-static string address = "mstechcamp10.japaneast.cloudapp.azure.com";
+static string address = "";
 static ushort port = 25575;
-static string pass = "98ds3b_0ees";
+static string pass = "";
 static MinecraftCommands commands = new MinecraftCommands(address, port, pass);
 
 public static void Run(TimerInfo myTimer, ILogger log)
@@ -337,9 +337,9 @@ using System;
 using MinecraftConnection;
 using MinecraftConnection.Items;
 
-static string address = "mstechcamp10.japaneast.cloudapp.azure.com";
+static string address = "";
 static ushort port = 25575;
-static string pass = "98ds3b_0ees";
+static string pass = "";
 static MinecraftCommands commands = new MinecraftCommands(address, port, pass);
 
 public static void Run(TimerInfo myTimer, ILogger log)
