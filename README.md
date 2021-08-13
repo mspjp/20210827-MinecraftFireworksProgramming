@@ -1,105 +1,142 @@
-# MS Tech Camp #10 - Pre
-サーバ負荷テスト（8月6日用）</br>
-今回はリハーサルではないので純粋にマイクラを楽しんでください！</br>
+<h1>MS Tech Camp #10 </br>
+Azure Functions と Minecraft で打ち上げ花火を楽しもう！</h1>
 
 ![](images/00.png)
 
-(接続先のアドレスとパスワードはチャットでお伝えします。)
+[MS Tech Camp #10](https://mspjp.connpass.com/event/220071/)で使用するハンズオン資料です。
 
-# 準備
-Minecraft本体を準備してください。
+Azure Functions の .NET ランタイムを使用してC#プログラミングを行い、Minecraftで花火を打ち上げます。参加者全員で花火を打ち上げて、マイクラ花火大会を楽しみましょう！
+
+# 1. Minecraft の設定
+今回は Minecraft Java版と統合版の方が参加できるように、クロスプレイが可能なマイクラサーバを用意しました。マイクラサーバの接続先アドレスを伝えますので、そのアドレスを使用してログインします。
 
 <details><summary>Java版の設定</summary>
 <div>
 
 マイクラ本体を起動し、`起動構成`タブをクリックします。`NewInstallation`をクリックし、必要事項を記入していきます。名前とゲームディレクトリは自由に決めてください。バージョンは必ず `1.17.1` にしてください。
 
+![](images/Section1/01.png)
+
 |名前|設定例|
 |--|--|
 |名前|MS Tech Camp 10|
 |バージョン|1.17.1|
-|ゲームディレクトリ|C:\Users\hoge\Desktop\Minecraft|
+|ゲームディレクトリ|C:\Users\hoge\Desktop\mstechcamp10|
 
 できたら保存をクリックします。最初の画面に戻って、起動構成で作成したプロファイルを選択し、`プレイ`をクリックしてください。
 
-![](images/01.jpg)
+![](images/Section1/02.jpg)
 
 起動後は`マルチプレイ`を選択し、`サーバの追加`から指定されたアドレスを入力します。
 
+入力できたら`保存`をクリックし、作成したサーバを選択して `サーバに参加` をクリックすれば、ログイン出来ます。
+
+![](images/Section1/03.png)
 </div></details>
 
-<details><summary>Windows10版の設定</summary>
+<details><summary>統合版の設定</summary>
 <div>
 
-PowerShellにて次のコマンドを実行します。
+統合版はWin10版、iOS版、Android版の方のみを対象としています。
+
+まず、Win10版の方は PowerShell にて次のコマンドを実行してください。
 
 ```
 CheckNetIsolation LoopbackExempt -a -n="Microsoft.MinecraftUWP_8wekyb3d8bbwe"
 ```
 
-このあとの手順については事前資料を参照してください。
+ここからはiOS版とAndroid版共通の設定です。
 
+Minecraftを開いたら`サーバ`タブから`サーバの追加`をクリックします。
+
+![](images/Section1/04.png)
+
+サーバアドレスを入力して`遊ぶ`をクリックすると、サーバにログイン出来ます。
+
+![](images/Section1/05.png)
+
+統合版からのログインでは、描画までに時間がかかりますので1分ほどお待ち下さい。
 </div></details>
 
-<details><summary>iOS版とAndroid版の設定</summary>
-<div>
+# 2. Azrue Functions の作成
+[Azure ポータル]()にて `リソースの作成`をクリックします。
 
-マイクラのアプリをそのまま起動し、サーバ設定を行うだけです。</br>
-Windows10版と同様の設定を行います。
+![](images/Section2/01.png)
 
-</div></details>
+`関数アプリ`を選択します。
 
-<details><summary>PS4版 / Switch版 / XBOX版の設定</summary>
-<div>
+![](images/Section2/02.png)
 
-ゲーム本体のネットワーク設定にてDNSを次のように設定します。
+関数アプリの作成画面が表示されるので、必要事項に記入していきます。関数アプリの名称は一意である必要があります。
 
-|項目|値|
+|項目|記入例|
 |--|--|
-|優先DNS|104.238.130.180|
-|代替DNS|8.8.8.8|
+|サブスクリプション|Azure for Students|
+|リソースグループ|rg-mstechcamp10|
+|関数アプリ|func-mstechcamp10-001|
+|公開|コード|
+|ランタイムスタック|.NET|
+|バージョン|3.1|
+|地域|Japan East|
 
-設定を保存してマイクラを起動してください。</br>
-このあとの設定手順については事前資料を参照してください。Win10版と同じ操作です。
+<details><summary>リソースグループの新規作成方法</summary>
+<div>
+
+`新規作成`をクリックし、リソースグループ名を記入します。
+
+![](images/Section2/03.png)
+
+記入ができたら`OK`をクリックします。
 </div></details>
 </br>
-Azure Functionsも使用する予定ですが、リソースの作成に関しては事前資料を確認してください。</br>
 
-マイクラの操作方法についても簡単に説明します。
+![](images/Section2/04.png)
 
-# 検証1
-全員が止まった状態で花火を打ち上げます。</br>
-花火を打ち上げるプログラムの実行はたくのろじぃが行うのでそのままお待ち下さい。
 
-(普通に、花火を楽しんでいただくだけです！)
+関数アプリの確認画面が表示されるので、このまま `作成` をクリックします。
 
-# 検証2
-全員が動き回っている状態で花火を打ち上げます。</br>
-皆さんには地面をかけていただいたり、木を伐っていただいたり、空を飛んで動き回っていただきます。BE版から参加するとブロックを破壊できない場合があるので、その場合は動き回ってください。
+![](images/Section2/05.png)
 
-# 検証3
-Azure Functions や Visual Studio などを使用して皆さんにも花火を打ち上げていただきます。このとき、皆さんは花火の見える角度で立ち止まってください。
+デプロイが完了したら、`リソースに移動` をクリックします。
 
-Functionsのトリガーは任意のもので結構です。関数の状態は`無効`にしておき、`コードとテスト`から実行していきます。
+![](images/Section2/06.png)
 
-今回は MinecraftConnection パッケージを使用します。
+関数アプリの概要ページが表示されるので、左側のメニューから `関数` を選択し、`作成` をクリックします。右側に `関数の作成` というページが開くので次のように設定します。
 
-<details><summary>Visual Studio / VSCode で導入する場合</summary>
-<div>
-NuGetパッケージマネージャーコンソールから
+|項目|記入例|
+|--|--|
+|開発環境|ポータルでの開発|
+|テンプレート|Timer trigger|
+|新しい関数|Fireworks01|
+|Schedule|0 */5 * * * *|
 
-```
-install-package MinecraftConnection
-```
+![](images/Section2/07.png)
 
-を実行して導入してください。VSCodeの場合は入力欄に `MinecraftConnection` と入力すると候補が出てきます。</br>
+記入できたら `作成` をクリックします。
 
-</div></details>
+関数アプリが作成されると、その関数のページが開きます。タイマートリガーにしているので、一定時間が経過すると自動で関数アプリが実行されるようになっています。今回は手動で動かすので、まずは `無効化` をクリックして関数アプリの自動起動を停止します。
 
-<details><summary>Azure Functionsで導入する場合</summary>
-<div>
+![](images/Section2/08.png)
 
-NuGetパッゲージを導入するには `function.proj` というファイルを作成して、このように記述してください。
+
+これで関数アプリの作成手順は終了です。ここからは NuGet パッケージの導入とC#プログラミングを行い、花火を打ち上げます。
+
+
+# 3. 花火を打ち上げる
+マイクラで花火を打ち上げるために必要なパッケージ（ライブラリ）を導入します。
+
+PC上で `function.proj` というファイルを作成してください。（ファイル名が正しくないとパッケージを導入出来ません。）
+
+左側のメニューから `コードとテスト` を選択し、`アップロード` をクリックします。
+
+
+![](images/Section3/01.png)
+
+作成した `function.proj` をアップロードし、ドロップダウンメニューからこのファイルを選択します。
+
+![](images/Section3/02.png)
+
+ここに、次のような内容を記述します。
 
 ```xml
 <Project Sdk="Microsoft.NET.Sdk">
@@ -107,328 +144,276 @@ NuGetパッゲージを導入するには `function.proj` というファイル�
               <TargetFramework>netstandard2.0</TargetFramework>
        </PropertyGroup>
        <ItemGroup>
-              <PackageReference Include="MinecraftConnection" Version="1.0.0"/>
+              <PackageReference Include="MinecraftConnection" Version="1.1.0"/>
        </ItemGroup>
 </Project>
 ```
 
-このファイルを Functions の`コードとテスト`の`アップロード`からアップしてください。もし、アップロードしてもコードが記述されていないようでしたら、上記のコードを再度記述し、保存してください。
+できたら `保存` をクリックします。
 
-![](images/02.png)
+![](images/Section3/03.png)
 
-</div></details>
+ドロップダウンメニューから `run.csx` を選択してエディタを開きます。ここから花火を打ち上げるプログラム（C#）を記述していきます。
 
-## MinecraftConnectionの使い方
-MinecraftConnection を使用するには、MinecraftCommandsのインスタンスを生成してから作成します。</br>
-コンストラクタの引数には
+![](images/Section3/04.png)
 
-- サーバのアドレス（string）
-- サーバのポート番号（ushort）= 25575
-- サーバのパスワード （string）
-
-を入力します。ポート番号はマイクラサーバ接続用とコマンド送信用で異なるので注意してください。
+まずは、関数アプリを実行してマイクラで花火を打ち上げるための手順を説明します。下記のコードをコピーして貼り付けて貼り付けてください。（サーバアドレスとパスワードはチャットに貼り付けたものを使用してください。）
 
 ```cs
 using System;
 using MinecraftConnection;
 using MinecraftConnection.Items;
 
-static string address = "";
+static string address = "配布したサーバアドレス";
 static ushort port = 25575;
-static string pass = "";
+static string pass = "配布したパスワード";
 
 static MinecraftCommands commands = new MinecraftCommands(address, port, pass);
 
 public static void Run(TimerInfo myTimer, ILogger log)
 {
-    commands.SetOffFireworks(200, 60, 300, FireworksItems.LeargeBallBlue);
+    //花火を打ち上げる座標
+    int x = -72;
+    int y = 68;
+    int z = 92;
+
+    var fireworks = new Fireworks(20, FireworksShapes.LargeBall, FireworksColors.RED, FireworksColors.RED);
+    commands.SetOffFireworks(x, y, z, fireworks);
 }
 ```
 
-花火を打ち上げるメソッドは `SetOffFireworks` です。引数にはそれぞれ
+貼り付けたら `保存` をクリックしてください。
 
-- x 座標 (int)
-- y 座標 (int)
-- z 座標 (int)
-- 花火アイテム (Fireworksクラス)
+![](images/Section3/05.png)
 
-が入ります。花火アイテムを作るには、すでに用意されている静的クラスの `FireworksItems` を使用するか、自分で定義するかのどちらかになります。
+コンパイルが完了すると、ページ下にあるログにて水色の文字で `Compilation succeeded.` と表示されます。
 
-今回、座標に関しては (x, y, z) = (-62, 68, 92) あたりがちょうど良いと思います。ここから乱数などを使用して前後左右に揺さぶると面白いかもしれません。
+プログラムを実行する場合は `テストと実行` から、
 
-ちなみに、同じ形状の花火アイテムをコレクションにまとめたものがあり、`FireworksItemItemList`が利用できます。（Markdown書いてて気づきましたが誤字ってますね...。直しておきます...。）
+![](images/Section3/06.png)
+
+`実行`をクリックします。（ボディの中身は空のままで実行します。）
+
+![](images/Section3/07.png)
+
+実行ボタンを押してすぐにマインクラフトの画面を表示すると、花火を見ることができます。
+
+![](images/Section3/09.png)
+
+Functions が正しく実行出来ていれば、画像の赤線で引いた部分のような文字列が表示されます。
+
+![](images/Section3/08.png)
+
+## マイクラの操作について
+前後左右に動くには `W` `A` `S` `D` キーを使用します。
+
+今回はクリエイティブモードなので、スペースキーを2回連続で押すと空中に浮くことが出来ます。空中に浮いている状態でスペースキーを長押しすると上昇、SHIFTキーを押すと下降することができ、地面に着地すると歩くことが出来ます。
+
+マイクラ上でキーボードの `/` キーを押すとウィンドウをアクティブにしたまま別のウィンドウ操作ができるようになります。マイクラの操作に戻る場合は `ESC` を押します。
+
+画面上のものが邪魔であれば、`F1` キーを押すと消すことができます。もう一度押すと元に戻すことができます。また、`F3`キーを押すとマイクラの情報が表示されます。座標を確認する場合は赤線の部分を確認してください。
+
+![](images/Section3/10.jpg)
+
+# 4. 花火製作のレシピ
+ここからは皆さんで花火を作成して打ち上げてみましょう。下に花火の形状や色についてまとめましたので、参考にしてみてください！
+
+## 4.1 花火の作り方
+花火アイテムを作るには、`Fireworks` クラスを使用します。先程の例では、
 
 ```cs
-using MinecraftConnection;
-using MinecraftConnection.Items;
-//インスタンス化省略
-
-foreach(var item in FireworksItemItemList.LeargeBallList)
-{
-    commands.SetOffFireworks(x, y, z, item);
-}
+var fireworks = new Fireworks(20, FireworksShapes.LargeBall, FireworksColors.RED, FireworksColors.RED);
 ```
 
-## 花火アイテムの作り方
-花火アイテムを作るには `Fireworks`クラスを使用します。
+となっていました。`Fireworks` の引数にはそれぞれ、
+
+|引数の型|説明|
+|int|花火が爆発するまでの時間 [tick]|
+|FireworksShapes|花火の形状|
+|FireworksColors|花火が爆発したときの色|
+|FireworksColors|花火がフェードアウトしていくときの色|
+
+が入ります。これらの値を変更することでオリジナルの花火を作ることができます。
+
+## 4.2 花火の形状
+マイクラの花火の形は5種類あります。
+
+|花火の形|書き方|
+|--|--|
+|大玉花火|FireworksShapes.LargeBall|
+|小玉花火|FireworksShapes.SmallBall|
+|クリーパー花火|FireworksShapes.Creeper|
+|星型花火|FireworksShapes.Star|
+|破裂する花火|FireworksShapes.Burst|
+
+すべての形の花火を打ち上げるサンプルコード：
 
 ```cs
-var fireworks = new Fireworks(20, 2, FireworksShapes.LargeBall, true, false, FireworksColors.BLUE, FireworksColors.RED);
-```
-
-コンストラクタの引数は
-
-- 花火が爆発するまでの時間 (int)
-- 花火の飛距離 (int)
-- 花火の形状 (FireworksShape)
-- きらめき効果 (bool)
-- 流星効果 (bool)
-- 爆発したときの色 (FireworksColors)
-- フェードアウトしてくときの色 (FireworksColors)
-
-となっています。色に関しては、複数指定することもでき、
-
-```cs
-var color = new List<FireworksColors>()
-{
-    FireworksColors.GREEN,
-    FireworksColors.ORANGE,
-    FireworksColors.YELLOW
-};
-var fireworks = new Fireworks(20, 2, FireworksShapes.LargeBall, true, false, color, FireworksColors.RED);
-```
-
-とすることで緑、オレンジ、黄色の爆発をしたあとに、赤色でフェードアウトしていくような花火になります。
-また、現実世界での1秒はマイクラの世界では 1/20[秒]= 0.05[秒] = 1[tick] になりますので、上記の例では打ち上げて1秒後に花火が爆発するようになります。
-
-花火が爆発したときの形状は5種類から選ぶことができます。
-
-- LargeBall
-- SmallBall
-- Star
-- Creeper
-- Burst
-
-いろいろ試してみてください。
-
-## プログラムレシピ集
-打ち上げ花火の例です。参考にしてください。</br>
-(サーバアドレスとパスワードを変更してください。)
-
-<details><summary>その1</summary>
-<div>
-
-```cs
-using System;
-using MinecraftConnection;
-using MinecraftConnection.Items;
-
-static string address = "";
-static ushort port = 25575;
-static string pass = "";
-static MinecraftCommands commands = new MinecraftCommands(address, port, pass);
-
 public static void Run(TimerInfo myTimer, ILogger log)
 {
+    //花火を打ち上げる座標
+    int x = -72;
+    int y = 68;
+    int z = 92;
+
+    commands.SetOffFireworks(x, y, z, FireworksItems.LeargeBallRed);
+    commands.Wait(2000); //打ち上げるのを2秒待ちます。
+    commands.SetOffFireworks(x, y, z, FireworksItems.SmallBallRed);
+    commands.Wait(2000);
+    commands.SetOffFireworks(x, y, z, FireworksItems.CreeperRed);
+    commands.Wait(2000);
+    commands.SetOffFireworks(x, y, z, FireworksItems.StarRed);
+    commands.Wait(2000);
+    commands.SetOffFireworks(x, y, z, FireworksItems.BurstRed);
+}
+```
+
+![](images/Section4/01.png)
+![](images/Section4/02.png)
+![](images/Section4/03.png)
+![](images/Section4/04.png)
+## 4.3 花火の色
+マイクラの花火の色は 16 色あります。
+
+|色|書き方|
+|--|--|
+|黒色|BLACK|
+|赤色|RED|
+|緑色|GREEN|
+|茶色|BROWN|
+|青色|BLUE|
+|紫色|PURPLE|
+|シアン色|CYAN|
+|薄灰色|LIGHTGRAY|
+|灰色|GRAY|
+|桃色|PINK|
+|ライム色|LIME|
+|黄色|YELLOW|
+|水色|LIGHTBLUE|
+|マゼンタ色|MAGENTA|
+|橙色|ORANGE|
+|白色|WHITE|
+
+![](images/Section4/colors.png)
+
+すべての色を打ち上げるサンプルコード：
+
+```cs
+public static void Run(TimerInfo myTimer, ILogger log)
+{
+    //花火を打ち上げる座標
+    int x = -72;
+    int y = 68;
+    int z = 92;
+
+    List<Fireworks> fireworks = new List<Fireworks>()
+    {
+       new Fireworks(20, FireworksShapes.LargeBall, FireworksColors.BLACK, FireworksColors.BLACK),
+       new Fireworks(20, FireworksShapes.LargeBall, FireworksColors.BLUE, FireworksColors.BLUE),
+       new Fireworks(20, FireworksShapes.LargeBall, FireworksColors.BROWN, FireworksColors.BROWN),
+       new Fireworks(20, FireworksShapes.LargeBall, FireworksColors.CYAN, FireworksColors.CYAN),
+       new Fireworks(20, FireworksShapes.LargeBall, FireworksColors.GRAY, FireworksColors.GRAY),
+       new Fireworks(20, FireworksShapes.LargeBall, FireworksColors.GREEN, FireworksColors.GREEN),
+       new Fireworks(20, FireworksShapes.LargeBall, FireworksColors.LIGHTBLUE, FireworksColors.LIGHTBLUE),
+       new Fireworks(20, FireworksShapes.LargeBall, FireworksColors.LIGHTGRAY, FireworksColors.LIGHTGRAY),
+       new Fireworks(20, FireworksShapes.LargeBall, FireworksColors.LIME, FireworksColors.LIME),
+       new Fireworks(20, FireworksShapes.LargeBall, FireworksColors.MAGENTA, FireworksColors.MAGENTA),
+       new Fireworks(20, FireworksShapes.LargeBall, FireworksColors.ORANGE, FireworksColors.ORANGE),
+       new Fireworks(20, FireworksShapes.LargeBall, FireworksColors.PINK, FireworksColors.PINK),
+       new Fireworks(20, FireworksShapes.LargeBall, FireworksColors.PURPLE, FireworksColors.PURPLE),
+       new Fireworks(20, FireworksShapes.LargeBall, FireworksColors.RED, FireworksColors.RED),
+       new Fireworks(20, FireworksShapes.LargeBall, FireworksColors.WHITE, FireworksColors.WHITE),
+       new Fireworks(20, FireworksShapes.LargeBall, FireworksColors.YELLOW, FireworksColors.YELLOW)
+    };
+
+    foreach(var item in fireworks)
+    {
+       commands.SetOffFireworks(x, y, z, item);
+        commands.Wait(3000); //3秒ごとに打ち上げる
+    }
+}
+```
+
+## 4.4 きらめき効果をつける
+花火がフェードアウトしていくときに、キラキラした効果をつけることができます。きらめき効果をつけるには、`Fireworks` クラスに `.Flicker()` をつけます。
+
+
+```cs
+var fireworks = new Fireworks(20, FireworksShapes.LargeBall, FireworksColors.CYAN, FireworksColors.CYAN).Flicker();
+```
+
+![](images/Section4/05.png)
+
+## 4.5 流星効果をつける
+花火がフェードアウトしていくときに、光の軌跡が残るような効果をつけることができます。流星効果をつけるには、`Fireworks` クラスに `.Trail()` をつけます。
+
+```cs
+var fireworks = new Fireworks(20, FireworksShapes.LargeBall, FireworksColors.CYAN, FireworksColors.CYAN).Trail();
+```
+
+![](images/Section4/06.png)
+
+## 4.6 きらめき効果と流星効果をつける
+`.Flicker()` と `.Trail()` をつけることで両方の効果を併せ持った花火を作ることができます。（これらは順不同です。）
+
+```cs
+var fireworks = new Fireworks(20, FireworksShapes.LargeBall, FireworksColors.CYAN, FireworksColors.CYAN).Flicker().Trail();
+```
+
+![](images/Section4/07.png)
+
+## 4.7 花火を打つまでの時間を調整する
+連続で花火を打ち上げると、同じ座標で爆発して見えなくなってしまうので、時間をずらすことをおすすめします。指定した時間待機するには
+
+```
+commands.Wait(2000);
+```
+
+を使用します。引数にはミリ秒の数値が入ります。（1000ミリ秒 = 1秒）
+## 4.8 ランダムに花火を打ち上げる
+座標と色をランダムにして花火を打ち上げるサンプルコードを紹介します。座標を変更して試してみてください！（y座標に関しては地面よりも高い場所でないと、花火が打ち上がりません。）
+
+```cs
+public static void Run(TimerInfo myTimer, ILogger log)
+{
+    //花火を打ち上げる座標
     int x = -72;
     int y = 68;
     int z = 92;
 
     var rnd = new Random();
-    for (int i = 0; i < 10; i++)
+
+    for(int i = 0; i < 100; i++)
     {
-        commands.SetOffFireworks(x, y, z + rnd.Next(-10, 10), FireworksItems.CreeperLime);
-        commands.SetOffFireworks(x, y, z + rnd.Next(-10, 10), FireworksItems.LeargeBallBlue);
-        commands.SetOffFireworks(x, y, z + rnd.Next(-10, 10), FireworksItems.SmallBallCyan);
-        commands.SetOffFireworks(x, y, z + rnd.Next(-10, 10), FireworksItems.BurstPinkFlickerTrail);
-        commands.Wait(1000);
+       var fireworks = new Fireworks(20, FireworksShapes.LargeBall, FireworksOptions.RandomColors(1, 5), FireworksOptions.RandomColors(1, 5));
+       commands.SetOffFireworks(x + rnd.Next(0, 20), y + rnd.Next(-5, 10), z + rnd.Next(-30, 30), fireworks);
+       commands.Wait(200);
     }
 }
 ```
 
-</div></details>
+![](images/Section4/08.png)
 
-<details><summary>その2</summary>
-<div>
+## 4.9 補足
+今回、関数アプリはタイマートリガーを使用しているため、一定時間ごとに関数を動かすことができます。余裕がある方は、先程無効に設定した関数アプリを `有効` にしてみてください。デフォルトでは 5 分ごとに花火が打ち上がります。
 
-```cs
-using System;
-using MinecraftConnection;
-using MinecraftConnection.Items;
+# 5. リソースの削除
+今回作成したリソースとリソースグループの削除方法についてです。まず、Azure ポータルのホームから `リソースグループ` を選択します。
 
-static string address = "";
-static ushort port = 25575;
-static string pass = "";
-static MinecraftCommands commands = new MinecraftCommands(address, port, pass);
+![](images/Section4/09.png)
 
-public static void Run(TimerInfo myTimer, ILogger log)
-{
-    int x = -72;
-    int y = 68;
-    int z = 92;
+今回作成したリソースグループ名を選択し、`リソースグループの削除` をクリックします。削除するにはリソースグループ名の入力が必要です。入力が完了したら、下の `削除` をクリックして、関数アプリのリソースをまるごと削除できます。
 
-    var rnd = new Random();
-    foreach(var item in FireworksItemItemList.LeargeBallList)
-    {
-        commands.SetOffFireworks(x, y, z + rnd.Next(-20, 20), item);
-    }
-}
-```
+![](images/Section4/10.png)
 
-</div></details>
+# アンケート
+MS Tech Camp #10 へご参加いただきありがとうございました！</br>
+アンケートへのご協力をお願いします！ </br>
+https://forms.gle/dXwEDRvK1mAy86t76
 
-<details><summary>その3</summary>
-<div>
+# 参考
+トリガーを使用して Azure 関数を実行する</br>
+https://docs.microsoft.com/ja-jp/learn/modules/execute-azure-function-with-triggers/
 
-```cs
-using System;
-using MinecraftConnection;
-using MinecraftConnection.Items;
-
-static string address = "";
-static ushort port = 25575;
-static string pass = "";
-static MinecraftCommands commands = new MinecraftCommands(address, port, pass);
-
-public static void Run(TimerInfo myTimer, ILogger log)
-{
-    int x = -72;
-    int y = 68;
-    int z = 92;
-
-    var rnd = new Random();
-    for(int i = 0; i < 10; i++)
-    {
-        Kiku(x, y, z + rnd.Next(-20, 20), 20);
-    }
-}
-
-public static void Kiku(int x, int y, int z, int time)
-{
-    Fireworks fireworksIn = new Fireworks(time, 2, FireworksShapes.SmallBall, false, true, FireworksColors.RED, FireworksColors.RED);
-    Fireworks fireworksOut = new Fireworks(time, 2, FireworksShapes.LargeBall, false, true, FireworksColors.ORANGE, FireworksColors.ORANGE);
-    commands.SetOffFireworks(x, y, z, fireworksOut);
-    commands.SetOffFireworks(x, y, z, fireworksIn);
-    commands.Wait(1000);
-
-    fireworksIn = new Fireworks(time, 2, FireworksShapes.SmallBall, false, true, FireworksColors.GREEN, FireworksColors.GREEN);
-    fireworksOut = new Fireworks(time, 2, FireworksShapes.LargeBall, false, true, FireworksColors.LIME, FireworksColors.LIME);
-    commands.SetOffFireworks(x, y, z + 14, fireworksOut);
-    commands.SetOffFireworks(x, y, z + 14, fireworksIn);
-    commands.Wait(1000);
-
-    fireworksIn = new Fireworks(time, 2, FireworksShapes.SmallBall, false, true, FireworksColors.BLUE, FireworksColors.BLUE);
-    fireworksOut = new Fireworks(time, 2, FireworksShapes.LargeBall, false, true, FireworksColors.LIGHTBLUE, FireworksColors.LIGHTBLUE);
-    commands.SetOffFireworks(x, y, z + 28, fireworksOut);
-    commands.SetOffFireworks(x, y, z + 28, fireworksIn);
-    commands.Wait(1000);
-}
-```
-
-</div></details>
-
-<details><summary>その4</summary>
-<div>
-
-```cs
-using System;
-using MinecraftConnection;
-using MinecraftConnection.Items;
-
-static string address = "";
-static ushort port = 25575;
-static string pass = "";
-static MinecraftCommands commands = new MinecraftCommands(address, port, pass);
-
-public static void Run(TimerInfo myTimer, ILogger log)
-{
-    int x = -72;
-    int y = 68;
-    int z = 92 + 10;
-
-    var rnd = new Random();
-
-    for (int i = 0; i < 100; i++)
-    {
-        var fireworks = new Fireworks(20, 2, FireworksShapes.LargeBall, true, true, GetRandomColors(), GetRandomColors());
-        commands.SetOffFireworks(x + rnd.Next(-20, 0), y, z + rnd.Next(-20, 20), fireworks);
-        commands.Wait(50 * rnd.Next(5, 10));
-    }
-}
-
-public static List<FireworksColors> GetRandomColors()
-{
-    var rnd = new Random();
-    var colorList = new List<FireworksColors>();
-
-    for (int i = 0; i < rnd.Next(1, 3); i++)
-    {
-        switch (rnd.Next(0, 15))
-        {
-            case 0:
-                colorList.Add(FireworksColors.BLACK);
-                break;
-            case 1:
-                colorList.Add(FireworksColors.BLUE);
-                break;
-            case 2:
-                colorList.Add(FireworksColors.BROWN);
-                break;
-            case 3:
-                colorList.Add(FireworksColors.CYAN);
-                break;
-            case 4:
-                colorList.Add(FireworksColors.GRAY);
-                break;
-            case 5:
-                colorList.Add(FireworksColors.GREEN);
-                break;
-            case 6:
-                colorList.Add(FireworksColors.LIGHTBLUE);
-                break;
-            case 7:
-                colorList.Add(FireworksColors.LIGHTGRAY);
-                break;
-            case 8:
-                colorList.Add(FireworksColors.LIME);
-                break;
-            case 9:
-                colorList.Add(FireworksColors.MAGENTA);
-                break;
-            case 10:
-                colorList.Add(FireworksColors.ORANGE);
-                break;
-            case 11:
-                colorList.Add(FireworksColors.PINK);
-                break;
-            case 12:
-                colorList.Add(FireworksColors.PURPLE);
-                break;
-            case 13:
-                colorList.Add(FireworksColors.RED);
-                break;
-            case 14:
-                colorList.Add(FireworksColors.WHITE);
-                break;
-            default:
-                colorList.Add(FireworksColors.YELLOW);
-                break;
-        }
-    }
-    return colorList;
-}
-```
-
-
-</div></details>
-
-# 検証4
-検証3で作成したプログラムを実行しながら花火を打ち上げつつ、皆さんで動き回ります。</br>
-
-# その5
-その他、気になった点について相談・検証
-
-(個人的に気になっている点)
-- Azure Functions に絞るべきか
-- 統合版は Win10 / Android / iOS 版に絞るべきか
-
+Minecraft with Code Project </br>
+https://www.mcwithcode.com/
