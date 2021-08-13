@@ -228,13 +228,15 @@ var fireworks = new Fireworks(20, FireworksShapes.LargeBall, FireworksColors.RED
 となっていました。`Fireworks` の引数にはそれぞれ、
 
 |引数の型|説明|
-|int|花火が爆発するまでの時間 [tick]|
+|--|--|
+|int|花火が爆発するまでの時間 (tick)|
 |FireworksShapes|花火の形状|
 |FireworksColors|花火が爆発したときの色|
 |FireworksColors|花火がフェードアウトしていくときの色|
 
 が入ります。これらの値を変更することでオリジナルの花火を作ることができます。
 
+(1tick = 1/20秒)
 ## 4.2 花火の形状
 マイクラの花火の形は5種類あります。
 
