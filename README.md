@@ -246,27 +246,7 @@ var fireworks = new Fireworks(20, FireworksShapes.LargeBall, FireworksColors.RED
 |星型花火|FireworksShapes.Star|
 |破裂する花火|FireworksShapes.Burst|
 
-すべての形の花火を打ち上げるサンプルコード：
-
-```cs
-public static void Run(TimerInfo myTimer, ILogger log)
-{
-    //花火を打ち上げる座標
-    int x = -72;
-    int y = 68;
-    int z = 92;
-
-    commands.SetOffFireworks(x, y, z, FireworksItems.LeargeBallRed);
-    commands.Wait(2000); //打ち上げるのを2秒待ちます。
-    commands.SetOffFireworks(x, y, z, FireworksItems.SmallBallRed);
-    commands.Wait(2000);
-    commands.SetOffFireworks(x, y, z, FireworksItems.CreeperRed);
-    commands.Wait(2000);
-    commands.SetOffFireworks(x, y, z, FireworksItems.StarRed);
-    commands.Wait(2000);
-    commands.SetOffFireworks(x, y, z, FireworksItems.BurstRed);
-}
-```
+花火の形状の例
 
 ![](images/Section4/01.png)
 ![](images/Section4/02.png)
