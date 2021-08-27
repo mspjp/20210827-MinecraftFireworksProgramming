@@ -70,7 +70,7 @@ Minecraftを開いたら`サーバ`タブから`サーバの追加`をクリッ�
 ![](images/Section3/10.jpg)
 
 # 2. Azrue Functions の作成
-[Azure ポータル]()にて `リソースの作成`をクリックします。
+[Azure ポータル](https://portal.azure.com/)にて `リソースの作成`をクリックします。
 
 ![](images/Section2/01.png)
 
